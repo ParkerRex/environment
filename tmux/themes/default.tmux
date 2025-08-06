@@ -22,7 +22,7 @@ set -g status-left-style NONE
 set -g status-right-style NONE
 
 set -g status-left "#[fg=color0,bg=color13,bold] #S #[fg=color4,bg=default,nobold,nounderscore,noitalics]"
-set -g status-right "#[fg=color0,bg=default,nobold,nounderscore,noitalics] #[fg=color4,bg=default] #{prefix_highlight} #[fg=color8,bg=default,nobold,nounderscore,noitalics] #[fg=color4,bg=color8] %d-%m-%Y #[fg=color4,bg=default] #[fg=color4,bg=color8] %H:%M #[fg=color4,bg=default] #[fg=color0,bg=color4,bold] #h "
+set -g status-right "#[fg=color0,bg=default,nobold,nounderscore,noitalics] #[fg=color4,bg=default] #{prefix_highlight} #[fg=color8,bg=default,nobold,nounderscore,noitalics] #[fg=color4,bg=color8] %m-%d-%Y #[fg=color4,bg=default] #[fg=color4,bg=color8] %H:%M #[fg=color4,bg=default] #[fg=color0,bg=color4,bold] #h "
 
 setw -g window-status-activity-style "fg=color11,bg=default"
 setw -g window-status-separator ""
