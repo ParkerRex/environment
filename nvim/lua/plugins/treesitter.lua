@@ -1,10 +1,16 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+    branch = "master",
   lazy = false,
   build = ":TSUpdate",
   config = function()
     require'nvim-treesitter.configs'.setup {
-      ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+      ensure_installed = {
+        "bash", "c", "cpp", "css", "dockerfile", "go", "html", "java",
+        "javascript", "json", "lua", "markdown", "markdown_inline", "python",
+        "regex", "ruby", "rust", "sql", "toml", "tsx", "typescript", "vim",
+        "vimdoc", "xml", "yaml"
+      },
       highlight = {
         enable = true,
         --[[ disable = { "embedded_template" } ]]

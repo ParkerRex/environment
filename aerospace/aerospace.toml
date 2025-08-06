@@ -27,7 +27,6 @@ alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout tiles horizontal horizontal'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
-[mode.main.binding]
 alt-h = 'focus left'
 alt-j = 'focus down'
 alt-k = 'focus up'
