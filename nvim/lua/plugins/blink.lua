@@ -120,9 +120,13 @@ return {
           name = "Ripgrep",
           opts = {
             prefix_min_len = 3,
-            context_size = 5,
-            max_filesize = "1M",
-            additional_rg_options = {},
+            backend = {
+              context_size = 5,
+              ripgrep = {
+                max_filesize = "1M",
+                additional_rg_options = {},
+              },
+            },
           },
         },
       },

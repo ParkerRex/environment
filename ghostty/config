@@ -1,11 +1,17 @@
 # APPEARANCE
-theme = tokyonight_night
+theme = dark:tokyonight_night, light:rose-pine-dawn
+background-blur-radius = 20
+background-opacity = 0.95
+font-family = JetBrains Mono
 cursor-invert-fg-bg = true
 mouse-hide-while-typing = true
 cursor-style = block
 cursor-style-blink = false
 # background-opacity = 0.75
 # background-blur-radius = 40
+
+# Global hotkey
+# keybind = global:alt+space=toggle_visibility
 
 # WINDOW CONTROLS
 confirm-close-surface = true

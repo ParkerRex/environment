@@ -272,6 +272,7 @@ V::::::V           V::::::VA:::::::A            II::::::II
     { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
     { "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
     { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
+    { "<leader>a", function() vim.lsp.buf.code_action() end, desc = "Code Actions", mode = { "n", "v" } },
     { "<leader>ss", function() Snacks.picker.lsp_symbols({layout = {preset = "vscode", preview = "main"}}) end, desc = "LSP Symbols" },
     { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
     { "<leader>z", function() Snacks.picker.zoxide() end, desc = "Zoxide" },

@@ -18,8 +18,6 @@ function M.on_attach(client, bufnr)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
   
   -- Essential mappings
-  vim.keymap.set('n', '<leader>a', function() Snacks.picker.lsp_code_actions() end, bufopts)
-  vim.keymap.set('v', '<leader>a', function() Snacks.picker.lsp_code_actions() end, bufopts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
   
   -- Optional but useful
