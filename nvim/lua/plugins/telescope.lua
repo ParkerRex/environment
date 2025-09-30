@@ -1,184 +1,127 @@
-local M = {
-  "nvim-telescope/telescope.nvim",
-  lazy = false,
-  enabled = false,
-    keys = {
-      { "<leader>r", ":lua require'telescope'.extensions.live_grep_args.live_grep_args()<CR>", noremap = true, silent = true, desc = "RG" },
-      { "<leader>#", ":lua require('telescope.builtin').grep_string()<CR>", noremap = true, silent = true, desc = "Grep string" },
-      { "<leader>ts", ":lua require('telescope.builtin').treesitter()<CR>", noremap = true, silent = true, desc = "Treesitter" },
-      { "<leader>m", ":lua require('telescope.builtin').marks()<CR>", noremap = true, silent = true, desc = "Marks" },
-      { "<leader>bb", ":lua require('plugins.telescope').my_buffers()<CR>", noremap = true, silent = true, desc = "Buffers" },
-      { "<leader>l", ":lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>", noremap = true, silent = true, desc = "Search line buffer" },
-      { "<leader>f", ":lua require('telescope.builtin').find_files()<CR>", hidden = true, noremap = true, silent = true, desc = "Find files" },
-      { "<leader>fp", ":lua require('plugins.telescope').project_files()<CR>", noremap = true, silent = true, desc = "Project files" },
-      { "<leader>p", ":lua require'telescope'.extensions.repo.list{file_ignore_patterns={'/%.cache/', '/%.cargo/', '/%.local/', '/%.asdf/', '/%.zinit/', '/%.tmux/'}}<CR>", noremap = true, silent = true, desc = "Projects" },
-      { "<leader>g", ":lua require('plugins.telescope').my_git_status()<CR>", noremap = true, silent = true, desc = "Git status" },
-      { "<leader>ns", ":lua require('plugins.telescope').my_note()<CR>", noremap = true, silent = true, desc = "Note" },
-      { "<leader>y", ":Telescope neoclip<CR>", noremap = true, silent = true, desc = "Neoclip" },
-      { "<leader>ll", ":lua require('telescope.builtin').grep_string({ search = vim.fn.input('GREP -> ') })<CR>", noremap = true, silent = true, desc = "Grep string" },
-      { "<leader>z", ":Telescope zoxide list<CR>", noremap = true, silent = true, desc = "Zoxide" },
-    },
+-- Fuzzy Finder (files, lsp, etc)
+return {
+  'nvim-telescope/telescope.nvim',
+  -- branch = '0.1.x',
+  branch = 'master',
   dependencies = {
-    { "nvim-lua/popup.nvim" },
-    { "nvim-lua/plenary.nvim" },
-    { "cljoly/telescope-repo.nvim" },
-    { "nvim-telescope/telescope-dap.nvim" },
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "nvim-telescope/telescope-live-grep-args.nvim" },
-    { "jvgrootveld/telescope-zoxide" },
+    'nvim-lua/plenary.nvim',
+    -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+    -- Only load if `make` is available. Make sure you have the system
+    -- requirements installed.
+    {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      build = 'make',
+      cond = function()
+        return vim.fn.executable 'make' == 1
+      end,
+    },
+    'nvim-telescope/telescope-ui-select.nvim',
+    'nvim-tree/nvim-web-devicons',
   },
-}
+  config = function()
+    local actions = require 'telescope.actions'
+    local builtin = require 'telescope.builtin'
 
-function M.config()
-  local trouble = require("trouble.sources.telescope")
-  local telescope = require("telescope")
-  telescope.setup{
-    defaults = {
-      vimgrep_arguments = {
-        "rg",
-        "--color=never",
-        "--no-heading",
-        "--with-filename",
-        "--line-number",
-        "--column",
-        "--smart-case",
-      },
-      file_ignore_patterns = {
-        "node_modules",
-        "package%-lock.json",
-        "%.next/.*",
-        "%.git/.*",
-        "%.turbo/.*",
-      },
-      layout_strategy = "horizontal",
-      layout_config = {
-        horizontal = {
-          prompt_position = "bottom",
-          preview_width = 0.55,
-          results_width = 0.8,
+    require('telescope').setup {
+      defaults = {
+        layout_strategy = 'horizontal',
+        layout_config = {
+          horizontal = {
+            prompt_position = 'bottom',
+            preview_width = 0.6,
+          },
         },
-        vertical = {
-          mirror = false,
+        mappings = {
+          i = {
+            ['<C-k>'] = actions.move_selection_previous, -- move to prev result
+            ['<C-j>'] = actions.move_selection_next, -- move to next result
+            ['<C-l>'] = actions.select_default, -- open file
+          },
+          n = {
+            ['q'] = actions.close,
+          },
         },
-        width = 0.87,
-        height = 0.95,
-        preview_cutoff = 120,
       },
-      -- prompt_prefix = "λ -> ",
-      prompt_prefix = "   ",
-      selection_caret = "❯ ",
-      winblend = 0,
-      border = {},
-      borderchars = {
-        prompt = {"━", "┃", "━", "┃", "┏", "┓", "┛", "┗"},
-        -- preview = {"━", "┃", "━", "┃", "┏", "┓", "┛", "┗"},
-        -- results = {"━", "┃", "━", "┃", "┏", "┓", "┛", "┗"},
-        -- prompt = {" ", " ", " ", " ", " ", " ", " ", " "},
-        preview = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},
-        results = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},
+      pickers = {
+        find_files = {
+          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+          hidden = true,
+        },
+        buffers = {
+          initial_mode = 'normal',
+          sort_lastused = true,
+          -- sort_mru = true,
+          mappings = {
+            n = {
+              ['d'] = actions.delete_buffer,
+              ['l'] = actions.select_default,
+            },
+          },
+        },
+        marks = {
+          initial_mode = 'normal',
+        },
+        oldfiles = {
+          initial_mode = 'normal',
+        },
+      },
+      live_grep = {
+        file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+        additional_args = function(_)
+          return { '--hidden' }
+        end,
       },
       path_display = {
         filename_first = {
-          reverse_directories = false
-        }
-      },
-      set_env = { ["COLORTERM"] = "truecolor" },
-      mappings = {
-        i = {
-          ["<c-t>"] = trouble.open,
-        },
-        n = {
-          --[[ ["<c-t>"] = trouble.open_with_trouble ]]
+          reverse_directories = true,
         },
       },
-    },
-    extensions = {
-      fzf = {
-        fuzzy = true, -- false will only do exact matching
-        override_generic_sorter = true, -- override the generic sorter
-        override_file_sorter = true, -- override the file sorter
-        case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+      extensions = {
+        ['ui-select'] = {
+          require('telescope.themes').get_dropdown(),
+        },
       },
-    },
-  }
+      git_files = {
+        previewer = false,
+      },
+    }
 
-  -- Extensions
+    -- Enable telescope fzf native, if installed
+    pcall(require('telescope').load_extension, 'fzf')
+    pcall(require('telescope').load_extension, 'ui-select')
 
-  telescope.load_extension('repo')
-  telescope.load_extension('neoclip')
-  telescope.load_extension('notify')
-  telescope.load_extension('dap')
-  telescope.load_extension('fzf')
-  telescope.load_extension('zoxide')
-  telescope.load_extension("live_grep_args")
-
-  previewers = require('telescope.previewers')
-  builtin = require('telescope.builtin')
-  local conf = require('telescope.config')
-  local delta = previewers.new_termopen_previewer {
-    get_command = function(entry)
-      -- this is for status
-      -- You can get the AM things in entry.status. So we are displaying file if entry.status == '??' or 'A '
-      -- just do an if and return a different command
-      if entry.status == ' D' then
-        return
-      end
-
-      if entry.status == '??' then
-        return { 'bat', '--style=plain', '--pager', 'less -R', entry.value }
-      end
-
-      return { 'git', '-c', 'core.pager=delta', '-c', 'delta.side-by-side=false', 'diff', entry.value }
-    end
-  }
-end
-
-function M.my_git_commits(opts)
-  opts = opts or {}
-  opts.previewer = delta
-
-  builtin.git_commits(opts)
-end
-
-function M.my_git_bcommits(opts)
-  opts = opts or {}
-  opts.previewer = delta
-
-  builtin.git_bcommits(opts)
-end
-
-function M.my_git_status(opts)
-  opts = opts or {}
-  opts.git_icons = {
-    added = "",
-    changed = "",
-    copied = "C",
-    renamed = "",
-    unmerged = "",
-    untracked = "",
-    deleted = "✖",
-  }
-  opts.previewer = delta
-
-  builtin.git_status(opts)
-end
-
-function M.my_note(opts)
-  builtin.live_grep { prompt_title = ' Note ', cwd = '~/Notes' }
-end
-
-function M.project_files()
-  local opts = {} -- define here if you want to define something
-  local ok = pcall(require'telescope.builtin'.git_files, opts)
-  if not ok then require'telescope.builtin'.find_files(opts) end
-end
-
-function M.my_buffers(opts)
-   builtin.buffers {
-    layout_strategy = "vertical",
-    ignore_current_buffer = true,
-    sort_mru = true
-  }
-end
-
-return M
+    vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
+    vim.keymap.set('n', '<leader><tab>', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
+    vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+    vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
+    vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
+    vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'Search [G]it [C]ommits' })
+    vim.keymap.set('n', '<leader>gcf', builtin.git_bcommits, { desc = 'Search [G]it [C]ommits for current [F]ile' })
+    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Search [G]it [B]ranches' })
+    vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Search [G]it [S]tatus (diff view)' })
+    vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+    vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+    vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+    vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+    vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]resume' })
+    vim.keymap.set('n', '<leader>so', builtin.oldfiles, { desc = '[S]earch Recent Files' })
+    vim.keymap.set('n', '<leader>sds', function()
+      builtin.lsp_document_symbols {
+        symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Property' },
+      }
+    end, { desc = '[S]each LSP document [S]ymbols' })
+    vim.keymap.set('n', '<leader>s/', function()
+      builtin.live_grep {
+        grep_open_files = true,
+        prompt_title = 'Live Grep in Open Files',
+      }
+    end, { desc = '[S]earch [/] in Open Files' })
+    vim.keymap.set('n', '<leader>/', function()
+      -- You can pass additional configuration to telescope to change theme, layout, etc.
+      builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+        previewer = false,
+      })
+    end, { desc = '[/] Fuzzily search in current buffer' })
+  end,
+}

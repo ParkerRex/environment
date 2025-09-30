@@ -1,23 +1,19 @@
 # APPEARANCE
-theme = dark:tokyonight_night, light:rose-pine-dawn
-background-blur-radius = 20
-background-opacity = 0.95
-font-family = JetBrains Mono
+theme = dark:Gitlab Dark, light:GitLab Light
+# background-blur-radius = 20
+# background-opacity = 0.9
+font-family = BlexMonoNerdFontPropo,monospace
 cursor-invert-fg-bg = true
 mouse-hide-while-typing = true
 cursor-style = block
 cursor-style-blink = false
-# background-opacity = 0.75
-# background-blur-radius = 40
 
 # Global hotkey
-# keybind = global:alt+space=toggle_visibility
+keybind = global:alt+space=toggle_visibility
 
 # WINDOW CONTROLS
 confirm-close-surface = true
-window-decoration = false
-gtk-titlebar = false
-gtk-adwaita = false
+# window-decoration = false
 window-padding-x = 2
 window-padding-y = 2
 window-padding-balance = true
