@@ -158,3 +158,67 @@
 --- 2025-09-30T02:32:26.092Z debug
 [InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000367, result: { id: 'e0fbccf8367ec782' } }
 ---
+
+--- 2025-09-30T02:32:36.093Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000368}
+---
+
+--- 2025-09-30T02:32:36.093Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000368, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:32:46.091Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000369}
+---
+
+--- 2025-09-30T02:32:46.091Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000369, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:32:56.090Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000370}
+---
+
+--- 2025-09-30T02:32:56.091Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000370, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:33:06.089Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000371}
+---
+
+--- 2025-09-30T02:33:06.094Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000371, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:33:16.090Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000372}
+---
+
+--- 2025-09-30T02:33:16.092Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000372, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:33:26.090Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000373}
+---
+
+--- 2025-09-30T02:33:26.091Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000373, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:33:36.091Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000374}
+---
+
+--- 2025-09-30T02:33:36.095Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000374, result: { id: 'e0fbccf8367ec782' } }
+---
+
+--- 2025-09-30T02:33:46.091Z debug
+[InspectorProxyWorker] SEND TO RUNTIME {"method":"Runtime.getIsolateId","id":100000375}
+---
+
+--- 2025-09-30T02:33:46.099Z debug
+[InspectorProxyWorker] RUNTIME INCOMING MESSAGE { id: 100000375, result: { id: 'e0fbccf8367ec782' } }
+---

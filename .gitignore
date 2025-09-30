@@ -1,4 +1,5 @@
 trigger
+.wrangler
 .claude
 .gemini-clipboard
 builder
