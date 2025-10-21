@@ -1,11 +1,13 @@
 # APPEARANCE
-theme = dark:Gitlab Dark, light:GitLab Light
+theme = light:Rose Pine Dawn, dark:Rose Pine
 # background-blur-radius = 20
 # background-opacity = 0.9
-font-family = BlexMonoNerdFontPropo,monospace
+font-family = JetBrainsMono Nerd Font
 cursor-invert-fg-bg = true
 mouse-hide-while-typing = true
 cursor-style = block
+gtk-titlebar = true
+window-decoration = true
 cursor-style-blink = false
 
 # Global hotkey

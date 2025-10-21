@@ -1,97 +1,109 @@
-require 'core.options' -- Load general options
-require 'core.keymaps' -- Load general keymaps
-require 'core.snippets' -- Custom code snippets
-require 'tools.sql-runner'
+-- Set leader key
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+vim.opt.scrolloff = 3
 
--- Install package manager
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
-    lazypath,
-  }
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
-vim.opt.rtp:prepend(lazypath)
 
--- Import color theme based on environment variable NVIM_THEME
-local default_color_scheme = 'nord'
-local env_var_nvim_theme = os.getenv 'NVIM_THEME' or default_color_scheme
+vim.g.lua_snippets_path = vim.fn.stdpath("config") .. "/lua/snippets/"
+vim.cmd("au BufRead,BufNewFile *.templ setfiletype templ")
+local autocmd = vim.api.nvim_create_autocmd
 
--- Define a table of theme modules
-local themes = {
-  nord = 'plugins.themes.nord',
-  onedark = 'plugins.themes.onedark',
-}
-
--- Setup plugins
-require('lazy').setup({
-  require(themes[env_var_nvim_theme]),
-  require 'plugins.telescope',
-  require 'plugins.treesitter',
-  require 'plugins.lsp',
-  require 'plugins.autocompletion',
-  require 'plugins.none-ls',
-  require 'plugins.lualine',
-  require 'plugins.bufferline',
-  require 'plugins.neo-tree',
-  require 'plugins.oil',
-  require 'plugins.alpha',
-  require 'plugins.indent-blankline',
-  require 'plugins.lazygit',
-  require 'plugins.comment',
-  require 'plugins.debug',
-  require 'plugins.gitsigns',
-  require 'plugins.database',
-  require 'plugins.misc',
-  require 'plugins.harpoon',
-  -- require 'plugins.avante',
-  require 'plugins.aerial',
-  require 'plugins.vim-tmux-navigator',
-}, {
-  ui = {
-    -- If you have a Nerd Font, set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
-  },
+vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile" }, {
+	pattern = { "*.templ" },
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		vim.api.nvim_buf_set_option(buf, "filetype", "templ")
+	end,
 })
 
--- Function to check if a file exists
-local function file_exists(file)
-  local f = io.open(file, 'r')
-  if f then
-    f:close()
-    return true
-  else
-    return false
-  end
-end
+vim.opt.rtp:prepend(lazypath)
 
--- Path to the session file
-local session_file = '.session.vim'
+-- Set highlight on search
+vim.o.hlsearch = false
 
--- Check if the session file exists in the current directory
-if file_exists(session_file) then
-  -- Source the session file
-  vim.cmd('source ' .. session_file)
-end
+-- Make line numbers default
+vim.wo.number = true
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+-- Tabs vs spaces
+vim.o.tabstop = 2 -- A TAB character looks like 4 spaces
+vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
+vim.o.softtabstop = 2 -- Number of spaces inserted instead of a TAB character
+vim.o.shiftwidth = 2 -- Number of spaces inserted when indenting
+
+-- Enable mouse mode
+vim.o.mouse = "a"
+
+-- Sync clipboard between OS and Neovim.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.o.clipboard = "unnamedplus"
+
+-- Enable break indent
+vim.o.breakindent = true
+
+-- Save undo history
+vim.o.undofile = true
+
+-- Case-insensitive searching UNLESS \C or capital in search
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
+-- Keep signcolumn on by default
+vim.wo.signcolumn = "yes"
+
+-- Decrease update time
+vim.o.updatetime = 250
+vim.o.timeoutlen = 300
+
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = "menuone,noselect"
+
+-- Set terminal gui colors to true
+vim.o.termguicolors = true
+
+-- add binaries installed by mason.nvim to path
+local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (is_windows and ";" or ":") .. vim.env.PATH
+
+-- Configure diagnostics for inline display
+vim.diagnostic.config({
+	virtual_text = {
+		enabled = true,
+		source = "if_many",
+		prefix = "●",
+	},
+	signs = {
+		enabled = true,
+	},
+	underline = {
+		enabled = true,
+	},
+	severity_sort = true,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
+})
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic error messages' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic quickfix list' })
+
+require("lazy").setup("plugins")

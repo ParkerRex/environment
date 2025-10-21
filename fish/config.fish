@@ -1,0 +1,13 @@
+set fish_greeting
+
+if status is-interactive
+  # Commands to run in interactive sessions can go here
+  set -x GPG_TTY (tty)
+  set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+  gpgconf --launch gpg-agent
+
+  zoxide init --cmd cd fish | source
+  
+  alias .. "cd .."
+  alias bu "brew update && brew upgrade && brew cleanup && brew autoremove"
+end

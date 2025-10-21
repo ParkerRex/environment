@@ -1,14 +1,29 @@
--- Easily comment visual regions/lines
 return {
-  'numToStr/Comment.nvim',
-  opts = {},
-  config = function()
-    local opts = { noremap = true, silent = true }
-    vim.keymap.set('n', '<C-_>', require('Comment.api').toggle.linewise.current, opts)
-    vim.keymap.set('n', '<C-c>', require('Comment.api').toggle.linewise.current, opts)
-    vim.keymap.set('n', '<C-/>', require('Comment.api').toggle.linewise.current, opts)
-    vim.keymap.set('v', '<C-_>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
-    vim.keymap.set('v', '<C-c>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
-    vim.keymap.set('v', '<C-/>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
-  end,
+  {
+    'numToStr/Comment.nvim',
+    keys = {
+      { "gcc", mode = "n",          desc = "Comment toggle current line" },
+      { "gc",  mode = { "n", "o" }, desc = "Comment toggle linewise" },
+      { "gc",  mode = "x",          desc = "Comment toggle linewise (visual)" },
+      { "gbc", mode = "n",          desc = "Comment toggle current block" },
+      { "gb",  mode = { "n", "o" }, desc = "Comment toggle blockwise" },
+      { "gb",  mode = "x",          desc = "Comment toggle blockwise (visual)" },
+      {
+        "<leader>/",
+        function()
+          require("Comment.api").toggle.linewise.current()
+        end,
+        desc = "Toggle comment"
+      },
+      {
+        "<leader>/",
+          "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+        mode = "v",
+        desc = "Toggle comment",
+      }
+    },
+    config = function(_, opts)
+      require("Comment").setup(opts)
+    end,
+  },
 }
