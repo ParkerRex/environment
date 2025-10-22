@@ -72,4 +72,3 @@ keybind = ctrl+shift+a>left=goto_split:left
 keybind = ctrl+shift+a>down=goto_split:bottom
 keybind = ctrl+shift+a>up=goto_split:top
 keybind = ctrl+shift+a>right=goto_split:right
-keybind = shift+enter=text:\x1b\r
