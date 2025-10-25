@@ -2,13 +2,28 @@
 
 return {
   {
+    "EdenEast/nightfox.nvim",
     lazy = false,
     priority = 1000,
+    config = function()
+      require("nightfox").setup({
+        options = {
+          -- Style can be "nightfox", "dayfox", "dawnfox", "duskfox", "nordfox", "terafox", "carbonfox"
+          styles = {
+            comments = "italic",
+            keywords = "bold",
+            types = "italic,bold",
+          }
+        }
+      })
+      -- You can use nightfox for dark mode and dayfox for light mode
+      vim.cmd.colorscheme "nightfox"
+    end,
+  },
+  {
+    lazy = true,
     -- dir = "~/plugins/colorbuddy.nvim",
     "tjdevries/colorbuddy.nvim",
-    config = function()
-      vim.cmd.colorscheme "gruvbuddy"
-    end,
   },
   "rktjmp/lush.nvim",
   "tckmn/hotdog.vim",

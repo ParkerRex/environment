@@ -6,7 +6,7 @@ return {
       { "reasonml-editor/tree-sitter-reason" },
     },
     build = ":TSUpdate",
-    branch = "main",
+    branch = "master",
     lazy = false,
     config = function()
       require("custom.treesitter").setup()

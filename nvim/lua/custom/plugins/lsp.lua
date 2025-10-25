@@ -235,25 +235,31 @@ return {
       vim.list_extend(ensure_installed, servers_to_install)
       require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
-      -- Set global capabilities for all LSP servers
-      vim.lsp.config("*", {
-        capabilities = capabilities,
-      })
+      -- Setup Mason-LSPConfig to handle the server installations
+      require("mason-lspconfig").setup {
+        ensure_installed = servers_to_install,
+        automatic_installation = true,
+      }
 
-      -- Configure and enable each LSP server
+      -- Setup each LSP server
+      -- Using the new vim.lsp.config API (Nvim 0.11+)
       for name, config in pairs(servers) do
         if config == true then
           config = {}
         end
 
-        -- Only call vim.lsp.config if there are server-specific settings
-        if next(config) ~= nil then
-          -- Remove manual_install flag as it's not an LSP config field
-          local lsp_config = vim.tbl_deep_extend("force", {}, config)
-          lsp_config.manual_install = nil
-          vim.lsp.config(name, lsp_config)
+        -- Prepare the final config
+        local final_config = vim.tbl_deep_extend("force", {
+          capabilities = capabilities,
+        }, config)
+
+        -- Remove manual_install flag as it's not an LSP config field
+        if type(final_config) == "table" then
+          final_config.manual_install = nil
         end
 
+        -- Configure and enable the LSP server using the new API
+        vim.lsp.config(name, final_config)
         vim.lsp.enable(name)
       end
 
